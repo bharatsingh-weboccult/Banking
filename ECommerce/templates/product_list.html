@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .product-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .product-image {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Our Products</h1>
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-md-4">
+                <div class="card product-card">
+                    <img src="{{ product.image_url }}" class="card-img-top product-image" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">Price: ₹{{ product.price }}</p>
+                        <p class="card-text">Available Stock: {{ product.stock }}</p>
+                        <form action="/add_to_cart/{{ product.id }}" method="POST">
+                            <div class="mb-3">
+                                <label for="quantity_{{ product.id }}" class="form-label">Quantity</label>
+                                <input type="number" id="quantity_{{ product.id }}" name="quantity" class="form-control" min="1" max="{{ product.stock }}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
